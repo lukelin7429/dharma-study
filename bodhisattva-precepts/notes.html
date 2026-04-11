@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>梵網經菩薩戒 — 筆記</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&display=swap');
+
+:root {
+  --gold:   #b8882a;
+  --gold-l: #e8cf7a;
+  --gold-d: #7a5a10;
+  --green:  #4a6741;
+  --green-l:#e8f0e4;
+  --ink:    #2a1f0e;
+  --paper:  #fdf8ef;
+  --paper2: #f5ede0;
+  --muted:  #7a6040;
+  --border: #d8c090;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Serif TC', 'STKaiti', '標楷體', serif;
+  background: var(--paper2);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── Top Nav ── */
+.topbar {
+  background: linear-gradient(135deg, #2a1f0e, #4a3510);
+  color: #f5e8c0;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,.35);
+}
+.topbar-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+}
+.topbar-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--gold-l);
+}
+.tab-nav { display: flex; gap: 4px; }
+.tab-btn {
+  padding: 6px 18px;
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #d4b870;
+  font-family: inherit;
+  font-size: .88rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: all .2s;
+}
+.tab-btn:hover { background: rgba(255,255,255,.08); border-color: #d4b870; }
+.tab-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(160deg, #2e2210 0%, #4a3510 50%, #2e2210 100%);
+  text-align: center;
+  padding: 52px 24px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(184,136,42,.18) 0%, transparent 70%);
+}
+.hero-symbol { font-size: 2.8rem; line-height: 1; margin-bottom: 10px; position: relative; }
+.hero h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold-l);
+  letter-spacing: .18em;
+  line-height: 1.4;
+  position: relative;
+}
+.hero-sub {
+  margin-top: 8px;
+  font-size: .9rem;
+  color: #c0a060;
+  letter-spacing: .1em;
+  position: relative;
+}
+.hero-divider {
+  width: 180px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 18px auto 0;
+}
+
+/* ── Page sections ── */
+.page { display: none; max-width: 900px; margin: 0 auto; padding: 36px 24px 64px; }
+.page.active { display: block; }
+
+/* ── Section cards ── */
+.section-card {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(100,70,0,.08);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+.section-head {
+  background: linear-gradient(135deg, #3a2a10, #5a4020);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-icon { font-size: 1.3rem; }
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold-l);
+  letter-spacing: .1em;
+}
+.section-body { padding: 28px 32px; }
+
+/* ── Source note ── */
+.source-note {
+  display: inline-block;
+  font-size: .8rem;
+  color: var(--muted);
+  font-style: italic;
+  background: var(--paper2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 22px;
+}
+
+/* ── Classical text box ── */
+.classical-box {
+  background: #faf4e8;
+  border: 1.5px solid #d4b870;
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-bottom: 22px;
+  position: relative;
+}
+.classical-box::before {
+  content: '原　文';
+  position: absolute;
+  top: -11px; left: 20px;
+  background: #faf4e8;
+  padding: 0 8px;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--gold-d);
+  letter-spacing: .12em;
+  border: 1px solid #d4b870;
+  border-radius: 10px;
+}
+.classical-text {
+  font-size: 1.02rem;
+  line-height: 2.2;
+  color: #2a1800;
+  text-align: justify;
+}
+
+/* ── Modern text ── */
+.modern-label {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: .14em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modern-label::before, .modern-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--green);
+  opacity: .35;
+}
+.modern-para {
+  font-size: .97rem;
+  line-height: 2;
+  color: #2a2010;
+  text-align: justify;
+  text-indent: 2em;
+  margin-bottom: 14px;
+}
+.modern-para:last-child { margin-bottom: 0; }
+
+/* ── Ritual steps ── */
+.step-wrap { display: flex; flex-direction: column; gap: 0; }
+.step {
+  display: flex;
+  gap: 0;
+  position: relative;
+}
+.step:not(:last-child) .step-line {
+  position: absolute;
+  left: 22px;
+  top: 46px;
+  width: 2px;
+  bottom: 0;
+  background: linear-gradient(180deg, var(--gold) 0%, var(--border) 100%);
+}
+.step-num-wrap {
+  flex-shrink: 0;
+  width: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2px;
+}
+.step-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-d), var(--gold));
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(120,80,0,.25);
+  position: relative;
+  z-index: 1;
+}
+.step-content { flex: 1; padding: 0 0 28px 12px; }
+.step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold-d);
+  margin-bottom: 6px;
+  letter-spacing: .06em;
+}
+.step-subtitle {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.step-body {
+  font-size: .95rem;
+  line-height: 1.9;
+  color: var(--ink);
+  text-align: justify;
+  margin-bottom: 10px;
+}
+.step-body:last-child { margin-bottom: 0; }
+
+/* ── Quote block ── */
+.quote-block {
+  border-left: 3.5px solid var(--gold);
+  background: #faf4e8;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 18px;
+  margin: 10px 0;
+  font-size: .93rem;
+  color: #3a2800;
+  line-height: 2;
+}
+
+/* ── Verse block ── */
+.verse-block {
+  background: var(--green-l);
+  border: 1.5px solid #8ab880;
+  border-radius: 10px;
+  padding: 18px 24px;
+  margin: 12px 0;
+  text-align: center;
+}
+.verse-line {
+  font-size: 1rem;
+  color: #2a4020;
+  line-height: 2.4;
+  letter-spacing: .06em;
+}
+
+/* ── Bullet list ── */
+.bullet-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.bullet-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: .93rem; line-height: 1.8; color: var(--ink);
+}
+.bullet-list li::before {
+  content: '◆';
+  color: var(--gold);
+  font-size: .75rem;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.bullet-list li strong { color: var(--gold-d); }
+
+/* ── Flow chart ── */
+.flow-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 16px 0;
+  align-items: stretch;
+}
+.flow-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.flow-box {
+  flex: 1;
+  background: var(--green-l);
+  border: 1.5px solid #8ab880;
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: center;
+}
+.flow-box-label {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: .1em;
+  margin-bottom: 4px;
+}
+.flow-box-desc { font-size: .85rem; color: var(--ink); line-height: 1.6; }
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  color: var(--gold);
+  font-size: 1.3rem;
+}
+
+/* ── Info pill ── */
+.pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.pill {
+  background: #f0e8d0;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: .82rem;
+  color: var(--gold-d);
+}
+.pill strong { font-weight: 700; }
+
+/* ── Footer ── */
+.page-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: .78rem;
+  color: #a08050;
+  letter-spacing: .06em;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .hero h1 { font-size: 1.35rem; }
+  .section-body { padding: 20px 18px; }
+  .topbar-title { font-size: .85rem; }
+  .tab-btn { padding: 6px 12px; font-size: .8rem; }
+  .classical-text { font-size: .95rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-title">☸ 梵網經菩薩戒</span>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="showPage('xu-wen')">序文</button>
+      <button class="tab-btn" onclick="showPage('yi-gui')">儀軌</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-symbol">🪷</div>
+  <h1>梵網經菩薩戒本</h1>
+  <p class="hero-sub">序文・半月誦儀軌　研讀筆記</p>
+  <div class="hero-divider"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 1：序文
+══════════════════════════════════════════ -->
+<div id="page-xu-wen" class="page active">
+
+  <div class="section-card">
+    <div class="section-head">
+      <span class="section-icon">📜</span>
+      <span class="section-title">梵網經菩薩戒本序文</span>
+    </div>
+    <div class="section-body">
+      <span class="source-note">出《出三藏記集》卷十一〈菩薩波羅提木叉後記〉第九，作者失佚</span>
+
+      <div class="classical-box">
+        <p class="classical-text">
+          夫窮像於玄原之無始，萬行始於戒信之心，首持玄兆。是故天竺之鳩摩羅什法師誦；什言：「此戒出梵網經中。」而什法師，少覲大方，齊異學於迦夷；淳風東扇，故弘始三年，秦王道契百王之業，與什參定，奉心大法。於逍遙觀中，三千學士，大小乘經五十餘部；惟菩薩十戒四十八輕，最後誦出。一時受行，影響三百人等，乃有累劫之津也。修菩薩道，豈惟當時之益，流通於後代，持誦不絕。故慧、融書三千部，囑諸後學好道君子，願來劫不絕，相授。共見千佛，龍華同坐。
+        </p>
+      </div>
+
+      <div class="modern-label">白話文翻譯</div>
+
+      <p class="modern-para">追溯萬象的究竟，回到那玄妙本源的無始之初——一切修行，都從持戒與信心開始，而持戒更是修行的第一要務。</p>
+      <p class="modern-para">正因如此，天竺的鳩摩羅什法師誦念了這些戒律，他說：「這些戒律，是出自《梵網經》之中。」</p>
+      <p class="modern-para">鳩摩羅什法師年幼時便廣訪各地大德高僧，在西域廣泛學習各種思想與學說。由於佛法的純正之風向東傳播，弘始三年（西元 401 年），秦王姚興以繼承百王道業的心志，邀請鳩摩羅什共同審定校譯，誠心奉行大法。</p>
+      <p class="modern-para">在長安的逍遙觀中，三千名學士參與其事，共同誦出大乘、小乘經典五十餘部。唯有菩薩十重戒與四十八輕戒，是最後才誦出的。</p>
+      <p class="modern-para">當時有三百多人共同受持奉行，彼此感化應和——這是累世修行所積累的渡化善緣啊！修習菩薩道的利益，豈止於當時？此後流通於後世，持誦之聲從未斷絕。</p>
+      <p class="modern-para">因此，慧法師與融法師謄寫了三千部，叮囑後來有志修道的君子們：願此法脈在未來的劫數中永不斷絕，輾轉傳授相承。如此大家便能共同得見千佛，在龍華三會上同坐。</p>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-head">
+      <span class="section-icon">🔑</span>
+      <span class="section-title">重點名詞</span>
+    </div>
+    <div class="section-body">
+      <ul class="bullet-list">
+        <li><strong>逍遙觀</strong>　東晉至後秦時期位於長安的重要譯經道場，鳩摩羅什在此主持大規模的譯經工作。</li>
+        <li><strong>弘始三年</strong>　即西元 401 年，後秦姚興弘始年號第三年，鳩摩羅什抵達長安開始大規模譯經。</li>
+        <li><strong>十戒四十八輕</strong>　菩薩戒的十重戒（根本重戒）與四十八輕戒，是《梵網經》的核心內容。</li>
+        <li><strong>龍華同坐</strong>　指未來彌勒菩薩成佛時的龍華三會，在場修行者皆得蒙化度成道。</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /page-xu-wen -->
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 2：儀軌
+══════════════════════════════════════════ -->
+<div id="page-yi-gui" class="page">
+
+  <div class="section-card">
+    <div class="section-head">
+      <span class="section-icon">🔔</span>
+      <span class="section-title">半月誦梵網經菩薩戒儀軌</span>
+    </div>
+    <div class="section-body">
+      <span class="source-note">每半個月（農曆初一與十五）舉行一次的布薩誦戒程序</span>
+
+      <p style="font-size:.93rem;line-height:1.9;color:var(--muted);margin-bottom:20px;">
+        布薩（梵語 Uposatha）是僧眾每半個月集體誦讀戒律、自我反省、懺悔過失的儀式。以下是「四稱聖號」前的三個主要環節。
+      </p>
+
+      <!-- Flow -->
+      <div class="flow-chart">
+        <div class="flow-row"><div class="flow-box"><div class="flow-box-label">早齋時段</div><div class="flow-box-desc">一、白僧秉欲</div></div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-row"><div class="flow-box"><div class="flow-box-label">打板信號後</div><div class="flow-box-desc">二、打板集僧</div></div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-row"><div class="flow-box"><div class="flow-box-label">集僧後</div><div class="flow-box-desc">三、懺悔羯磨</div></div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-row"><div class="flow-box" style="background:#f0e8d0;border-color:var(--gold);"><div class="flow-box-label" style="color:var(--gold-d);">接下來</div><div class="flow-box-desc">四、稱聖號 → 正式誦戒</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-head">
+      <span class="section-icon">📋</span>
+      <span class="section-title">三個環節詳解</span>
+    </div>
+    <div class="section-body">
+      <div class="step-wrap">
+
+        <!-- Step 1 -->
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-num-wrap"><div class="step-num">一</div></div>
+          <div class="step-content">
+            <div class="step-title">白僧秉欲</div>
+            <div class="step-subtitle">白僧 = 向僧眾宣告　／　秉欲 = 主持與欲程序</div>
+            <p class="step-body">在說戒日早齋時間，由上座或維那向大眾宣告：今日在某時某處舉行布薩說戒，界內僧眾應和合出席。若有人因病或合法事由無法到場，須辦理「與欲」手續。</p>
+            <div class="quote-block">
+              「大姊！一心念，今眾僧布薩說欲，我某甲菩薩戒比丘尼，有如法僧事，<strong>與欲清淨</strong>。一說。」
+            </div>
+            <p class="step-body">「與欲」即委託出席者帶上自己的同意，並聲明清淨無犯，讓布薩如法成立。</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-num-wrap"><div class="step-num">二</div></div>
+          <div class="step-content">
+            <div class="step-title">打板集僧</div>
+            <div class="step-subtitle">聽到鳴鐘或打板聲後的集合程序</div>
+            <p class="step-body">僧眾聽到訊號，須依序完成：</p>
+            <ul class="bullet-list" style="margin-bottom:12px;">
+              <li><strong>搭衣</strong>　穿好法衣（袈裟），以莊嚴姿態出席</li>
+              <li><strong>攜戒本</strong>　帶著《梵網菩薩戒本》，準備共同誦讀</li>
+              <li><strong>齊集說戒堂</strong>　到指定場所集合，禮佛三拜、對面立</li>
+            </ul>
+            <p class="step-body">上座就位後，維那帶領唱「爐香讚」。唱至「<strong>雲來集</strong>」三稱時，上座拈香，象徵法會正式開始。再禮佛三拜、對面立，準備進行羯磨。</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step">
+          <div class="step-num-wrap"><div class="step-num">三</div></div>
+          <div class="step-content">
+            <div class="step-title">懺悔羯磨</div>
+            <div class="step-subtitle">羯磨（Karman）= 僧眾正式法律程序</div>
+            <p class="step-body">若不在正式戒場內，須先「結小界」，劃定臨時律制範圍，使後續程序具合法效力。</p>
+            <p class="step-body">大眾長跪，維那帶領誦「<strong>懺悔偈</strong>」：</p>
+            <div class="verse-block">
+              <div class="verse-line">往昔所造諸惡業，</div>
+              <div class="verse-line">皆由無始貪瞋癡，</div>
+              <div class="verse-line">從身語意之所生，</div>
+              <div class="verse-line">今對佛前求懺悔。</div>
+            </div>
+            <ul class="bullet-list" style="margin:12px 0;">
+              <li>「貪瞋癡」即佛教所稱的<strong>三毒</strong>，是一切煩惱與惡業的根本</li>
+              <li>「身語意」為<strong>三業</strong>，分別指行為、言語、心念</li>
+            </ul>
+            <p class="step-body">念三遍、拜三次（三懺三拜），再禮佛三拜，懺悔程序完成，身心清淨，準備稱聖號正式誦戒。</p>
+          </div>
+        </div>
+
+      </div><!-- /step-wrap -->
+    </div>
+  </div>
+
+</div><!-- /page-yi-gui -->
+
+<div class="page-footer">
+  依《梵網經菩薩戒本》序文及《半月誦梵網經菩薩戒儀軌》編製
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
