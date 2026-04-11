@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>梵網經菩薩戒 — 小考測驗</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Serif TC', 'STKaiti', '標楷體', serif;
+    background: #f5f0e8;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(180,140,80,.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(80,120,80,.06) 0%, transparent 60%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+    color: #2a1f0e;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    max-width: 680px;
+    width: 100%;
+  }
+  .header .lotus { font-size: 2.4rem; line-height: 1; margin-bottom: 6px; }
+  .header h1 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #4a3000;
+    letter-spacing: .12em;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: .88rem;
+    color: #8a6a30;
+    letter-spacing: .06em;
+  }
+  .divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c8a050, #8a6030, #c8a050, transparent);
+    margin: 14px 0;
+    border-radius: 2px;
+  }
+
+  /* ─── Progress ─── */
+  .progress-wrap {
+    max-width: 680px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: .82rem;
+    color: #8a6a30;
+    margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    height: 6px;
+    background: #e0d4b8;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8a6030, #c8a050);
+    border-radius: 4px;
+    transition: width .4s ease;
+  }
+
+  /* ─── Card ─── */
+  .card {
+    background: #fffdf6;
+    border: 1.5px solid #d4b870;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(100,70,0,.10), 0 1px 4px rgba(100,70,0,.06);
+    padding: 32px 36px;
+    max-width: 680px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #8a6030, #c8a050, #8a6030);
+  }
+
+  .section-badge {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    background: #f0e4c0;
+    color: #7a5020;
+    border: 1px solid #d4b060;
+    border-radius: 20px;
+    padding: 3px 12px;
+    margin-bottom: 14px;
+  }
+
+  .question-num {
+    font-size: .82rem;
+    color: #a07840;
+    margin-bottom: 8px;
+    letter-spacing: .06em;
+  }
+  .question-text {
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: #2a1f0e;
+    line-height: 1.85;
+    margin-bottom: 22px;
+  }
+
+  /* ─── Options ─── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #faf6ec;
+    border: 1.5px solid #d4c090;
+    border-radius: 10px;
+    padding: 13px 16px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: .97rem;
+    color: #2a1f0e;
+    line-height: 1.7;
+    text-align: left;
+    transition: all .2s;
+  }
+  .option-btn:hover:not(:disabled) {
+    background: #f0e8cc;
+    border-color: #c8a050;
+    transform: translateX(3px);
+  }
+  .option-label {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #e8dbb8;
+    color: #7a5020;
+    font-size: .82rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid #c8a060;
+    transition: all .2s;
+  }
+  .option-btn:hover:not(:disabled) .option-label {
+    background: #c8a050;
+    color: #fff;
+    border-color: #a07030;
+  }
+
+  /* States */
+  .option-btn.correct {
+    background: #e8f5e2;
+    border-color: #5a9a4a;
+    color: #2a5020;
+  }
+  .option-btn.correct .option-label {
+    background: #5a9a4a;
+    color: #fff;
+    border-color: #4a8040;
+  }
+  .option-btn.wrong {
+    background: #faeaea;
+    border-color: #c05050;
+    color: #5a2020;
+    text-decoration: line-through;
+    opacity: .85;
+  }
+  .option-btn.wrong .option-label {
+    background: #c05050;
+    color: #fff;
+    border-color: #a03030;
+  }
+  .option-btn:disabled { cursor: default; }
+
+  /* ─── Feedback ─── */
+  .feedback {
+    display: none;
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: .92rem;
+    line-height: 1.75;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb {
+    background: #eaf5e4;
+    border-left: 4px solid #5a9a4a;
+    color: #2a5020;
+  }
+  .feedback.wrong-fb {
+    background: #faeaea;
+    border-left: 4px solid #c05050;
+    color: #5a2020;
+  }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  /* ─── Next btn ─── */
+  .next-btn {
+    display: none;
+    margin-top: 20px;
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, #8a6030, #b88040);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    cursor: pointer;
+    transition: opacity .2s, transform .1s;
+  }
+  .next-btn:hover { opacity: .9; }
+  .next-btn:active { transform: scale(.98); }
+  .next-btn.show { display: block; }
+
+  /* ─── Result ─── */
+  .result-card {
+    display: none;
+    text-align: center;
+  }
+  .result-card.show { display: block; }
+  .result-lotus { font-size: 3rem; margin-bottom: 12px; }
+  .result-score-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8a6030, #c8a050);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 16px rgba(100,70,0,.25);
+  }
+  .result-score-num { font-size: 2.4rem; font-weight: 700; color: #fff; line-height: 1; }
+  .result-score-den { font-size: .85rem; color: #f5e8c0; }
+  .result-title { font-size: 1.3rem; font-weight: 700; color: #4a3000; margin-bottom: 8px; }
+  .result-msg { font-size: .95rem; color: #6a5030; line-height: 1.85; margin-bottom: 24px; }
+  .review-list { text-align: left; margin-bottom: 24px; }
+  .review-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed #d4c090;
+    font-size: .9rem;
+    line-height: 1.7;
+  }
+  .review-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+  .review-q { color: #4a3000; }
+  .review-ans { color: #5a9a4a; font-weight: 500; font-size: .85rem; margin-top: 2px; }
+  .retry-btn {
+    padding: 12px 36px;
+    background: linear-gradient(135deg, #8a6030, #b88040);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .retry-btn:hover { opacity: .9; }
+
+  /* ─── Footer ─── */
+  .footer {
+    margin-top: 24px;
+    font-size: .78rem;
+    color: #a08050;
+    text-align: center;
+    letter-spacing: .06em;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 22px 18px; }
+    .header h1 { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="lotus">☸</div>
+  <h1>梵網經菩薩戒<br>小考測驗</h1>
+  <p class="subtitle">序文・半月誦儀軌</p>
+  <div class="divider"></div>
+</div>
+
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-info">
+    <span id="progressLabel">第 1 題，共 10 題</span>
+    <span id="scoreLabel">得分：0 / 0</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="card" id="quizCard">
+  <div class="section-badge" id="sectionBadge"></div>
+  <div class="question-num" id="questionNum"></div>
+  <div class="question-text" id="questionText"></div>
+  <div class="options" id="optionsContainer"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一題 →</button>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-lotus">🪷</div>
+    <div class="result-score-circle">
+      <div class="result-score-num" id="finalScore">0</div>
+      <div class="result-score-den" id="finalTotal">/ 10</div>
+    </div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="review-list" id="reviewList"></div>
+    <button class="retry-btn" onclick="restartQuiz()">重新作答</button>
+  </div>
+</div>
+
+<div class="footer">
+  依《梵網經菩薩戒本》序文及《半月誦梵網經菩薩戒儀軌》編製
+</div>
+
+<script>
+const questions = [
+  // ── 序文 (5題) ──────────────────────────────────────────────
+  {
+    section: "序文",
+    text: "《梵網經菩薩戒本序文》是出自哪一部文獻？",
+    options: ["《大正新脩大藏經》第一冊", "《出三藏記集》卷十一", "《梵網經》正文前言", "《高僧傳》鳩摩羅什傳"],
+    answer: 1,
+    explanation: "序文出自《出三藏記集》卷十一，〈菩薩波羅提木叉後記〉第九，作者已失佚。《出三藏記集》是南朝梁代僧祐所撰，是現存最早的目錄學著作之一。"
+  },
+  {
+    section: "序文",
+    text: "序文說「萬行始於戒信之心」，這句話的意思是什麼？",
+    options: [
+      "修行的最高境界是禪定與智慧",
+      "一切佈施善行最為重要",
+      "一切修行都從持戒與信心出發",
+      "菩薩戒只有受過具足戒的人才能受持"
+    ],
+    answer: 2,
+    explanation: "「萬行始於戒信之心」意指一切的修行（萬行），都以持戒與信心作為起點和根基。這說明戒律在修行道路上具有奠基的地位。"
+  },
+  {
+    section: "序文",
+    text: "鳩摩羅什法師是哪個地方的人？他在中國的哪個朝代主持譯經？",
+    options: [
+      "中土漢人，東晉時期",
+      "天竺（西域），後秦時期",
+      "西藏，唐朝時期",
+      "日本，隋朝時期"
+    ],
+    answer: 1,
+    explanation: "鳩摩羅什（Kumārajīva）是天竺（廣義西域，今新疆庫車一帶）人，在後秦弘始三年（西元 401 年）抵達長安，為秦王姚興主持大規模的譯經工作。"
+  },
+  {
+    section: "序文",
+    text: "在逍遙觀中，鳩摩羅什與三千學士共同誦出大小乘經典五十餘部，其中「最後誦出」的是什麼？",
+    options: [
+      "《阿含經》",
+      "《維摩詰經》",
+      "菩薩十重戒與四十八輕戒",
+      "《妙法蓮華經》"
+    ],
+    answer: 2,
+    explanation: "序文記載，大小乘諸經中，菩薩十重戒與四十八輕戒（即《梵網菩薩戒》）是在最後才誦出的，當時有三百多人一同受持奉行。"
+  },
+  {
+    section: "序文",
+    text: "序文末尾「共見千佛，龍華同坐」的「龍華」指的是什麼？",
+    options: [
+      "一種蓮花的名稱",
+      "未來彌勒菩薩成佛時的龍華三會",
+      "鳩摩羅什的道場名稱",
+      "梵網經中描述的天界花園"
+    ],
+    answer: 1,
+    explanation: "「龍華同坐」指的是未來彌勒菩薩降生成佛後，在龍華樹下舉行的三次法會（龍華三會），在場眾生皆得蒙化度成道。這是序文對後學最深切的祝願。"
+  },
+
+  // ── 儀軌 (5題) ──────────────────────────────────────────────
+  {
+    section: "半月誦儀軌",
+    text: "「布薩」（Uposatha）是多久舉行一次？主要目的是什麼？",
+    options: [
+      "每週一次，用於禮佛供養",
+      "每三個月一次，用於剃度受戒",
+      "每半個月一次，用於誦戒、懺悔、保持清淨",
+      "每年一次，用於結夏安居"
+    ],
+    answer: 2,
+    explanation: "布薩是每半個月（農曆初一和十五，或十四、十五）舉行一次的僧眾誦戒儀式，目的是讓僧眾共同誦讀戒律、自我反省、懺悔過失，彼此互相提醒護持清淨。"
+  },
+  {
+    section: "半月誦儀軌",
+    text: "「白僧秉欲」中，無法親自出席布薩的僧眾必須辦理什麼手續，布薩才算「如法」成立？",
+    options: [
+      "向住持法師提交書面請假申請",
+      "辦理「與欲」——委託他人代表自己的同意，並聲明清淨",
+      "事後補誦一遍戒本即可",
+      "在寺院公告欄簽名後即自動視為出席"
+    ],
+    answer: 1,
+    explanation: "律制規定，界內所有僧眾必須「和合」，布薩才能如法成立。若有人因病或合法事由無法出席，必須向出席者辦理「與欲」——說明事由、聲明自己清淨（無犯戒），授權對方代表自己的同意帶入布薩場合。"
+  },
+  {
+    section: "半月誦儀軌",
+    text: "打板集僧時，僧眾聽到鳴鐘或打板聲後，需要攜帶哪兩樣東西前往說戒堂？",
+    options: [
+      "念珠與拜墊",
+      "袈裟（法衣）與梵網菩薩戒本",
+      "香爐與蠟燭",
+      "佛像與供花"
+    ],
+    answer: 1,
+    explanation: "儀軌規定，僧眾聽到打板或鳴鐘後，必須「搭衣攜戒本」——穿好法衣（袈裟）並攜帶《梵網菩薩戒本》，齊集說戒堂，準備共同誦讀戒本。"
+  },
+  {
+    section: "半月誦儀軌",
+    text: "「羯磨」在律典中的意思是什麼？",
+    options: [
+      "一種梵文咒語，用於加持道場",
+      "業力與因果報應的法則",
+      "僧眾按固定格式進行的正式法律程序，具有律制效力",
+      "修習禪定時的特殊呼吸方法"
+    ],
+    answer: 2,
+    explanation: "「羯磨」（梵語 Karman）在律典中是指僧眾的正式法律行為程序，必須按照嚴格的固定格式、在有效的「界」內、向全體僧眾宣告，才具有律制上的法律效力。與日常所說的「業力」意義不同。"
+  },
+  {
+    section: "半月誦儀軌",
+    text: "懺悔偈「往昔所造諸惡業，皆由無始貪瞋癡」中，「貪瞋癡」在佛教中被稱為什麼？",
+    options: [
+      "三寶（佛、法、僧）",
+      "三學（戒、定、慧）",
+      "三毒（一切煩惱的根本）",
+      "三業（身、語、意）"
+    ],
+    answer: 2,
+    explanation: "「貪瞋癡」在佛教中被稱為「三毒」，是一切煩惱與惡業的根本。懺悔偈指出，我們所造的一切惡業，都是從這三種根本煩惱出發，透過身（行為）、語（言語）、意（心念）三業而產生的。"
+  }
+];
+
+// ─── State ───────────────────────────────────────────────────
+let current = 0;
+let score = 0;
+let answered = false;
+let results = [];
+
+// ─── Init ────────────────────────────────────────────────────
+function renderQuestion() {
+  const q = questions[current];
+  answered = false;
+
+  document.getElementById('sectionBadge').textContent = `📖 ${q.section}`;
+  document.getElementById('questionNum').textContent = `第 ${current + 1} 題`;
+  document.getElementById('questionText').textContent = q.text;
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  const labels = ['Ａ', 'Ｂ', 'Ｃ', 'Ｄ'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-label">${labels[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+  document.getElementById('quizCard').querySelector('.result-card').classList.remove('show');
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = (current / questions.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `第 ${current + 1} 題，共 ${questions.length} 題`;
+  document.getElementById('scoreLabel').textContent = `得分：${score} / ${current}`;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[current];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const correct = (idx === q.answer);
+  btns[idx].classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) btns[q.answer].classList.add('correct');
+
+  if (correct) score++;
+  results.push({ q: q.text, correct, correctOpt: q.options[q.answer] });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = correct
+    ? `<strong>✅ 答對了！</strong>${q.explanation}`
+    : `<strong>❌ 答錯了。正確答案是：${q.options[q.answer]}</strong>${q.explanation}`;
+
+  document.getElementById('nextBtn').className = 'next-btn show';
+  document.getElementById('nextBtn').textContent = current < questions.length - 1 ? '下一題 →' : '查看成績 ✦';
+
+  document.getElementById('scoreLabel').textContent = `得分：${score} / ${current + 1}`;
+}
+
+function nextQuestion() {
+  current++;
+  if (current < questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = `全部完成！共 ${questions.length} 題`;
+  document.getElementById('scoreLabel').textContent = `最終得分：${score} / ${questions.length}`;
+
+  const card = document.getElementById('quizCard');
+  card.querySelector('.section-badge').style.display = 'none';
+  card.querySelector('.question-num').style.display = 'none';
+  card.querySelector('.question-text').style.display = 'none';
+  card.querySelector('.options').style.display = 'none';
+  card.querySelector('.feedback').style.display = 'none';
+  card.querySelector('.next-btn').style.display = 'none';
+
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('finalTotal').textContent = `/ ${questions.length}`;
+
+  const pct = score / questions.length;
+  let title, msg;
+  if (pct >= .9) {
+    title = '🌺 功德圓滿！';
+    msg = '您對序文與儀軌的掌握非常扎實，深刻理解了鳩摩羅什的譯戒因緣以及布薩儀軌的律制精神。隨喜讚歎！';
+  } else if (pct >= .7) {
+    title = '🌸 根基穩固';
+    msg = '答得不錯！對核心內容已有相當的掌握，建議再溫習答錯的部分，尤其留意律制專有名詞（如羯磨、與欲）的含義。';
+  } else if (pct >= .5) {
+    title = '🌱 繼續深入';
+    msg = '已建立基本概念，但仍有若干細節需要加強。建議重讀序文白話翻譯與儀軌解說，再做一次練習。';
+  } else {
+    title = '📖 回頭溫習';
+    msg = '這份材料的內容確實不易，建議仔細重讀序文與儀軌講解後，再來一次測驗，相信會有很大的進步！';
+  }
+
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultMsg').textContent = msg;
+
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '<div style="font-size:.85rem;color:#8a6a30;margin-bottom:8px;font-weight:700;letter-spacing:.06em">作答回顧</div>';
+  results.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.className = 'review-item';
+    div.innerHTML = `
+      <span class="review-icon">${r.correct ? '✅' : '❌'}</span>
+      <div>
+        <div class="review-q">第 ${i+1} 題：${r.q}</div>
+        ${!r.correct ? `<div class="review-ans">正確答案：${r.correctOpt}</div>` : ''}
+      </div>`;
+    reviewList.appendChild(div);
+  });
+
+  document.getElementById('resultCard').classList.add('show');
+}
+
+function restartQuiz() {
+  current = 0;
+  score = 0;
+  answered = false;
+  results = [];
+
+  const card = document.getElementById('quizCard');
+  card.querySelector('.section-badge').style.display = '';
+  card.querySelector('.question-num').style.display = '';
+  card.querySelector('.question-text').style.display = '';
+  card.querySelector('.options').style.display = '';
+
+  renderQuestion();
+}
+
+// ─── Start ───────────────────────────────────────────────────
+renderQuestion();
+</script>
+</body>
+</html>
